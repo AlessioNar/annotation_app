@@ -30,15 +30,17 @@ def display_article(uploaded_data, article_index):
     text = [child['text'] for child in current_article['children']]
     text = "\n\n".join(text)
 
-    actors = []
-    selections = label_select(body=str(text), labels=["Actor"])#, "Digital Solution"])
+    st.markdown(text)
+
+    #actors = []
+    #selections = label_select(body=str(text), labels=["Actor"])#, "Digital Solution"])
     
-    for selection in selections:        
-        if selection.labels[0] == 'Actor':
-            text = selection.text
-            actors.append(text)
+    #for selection in selections:        
+    #    if selection.labels[0] == 'Actor':
+    #        text = selection.text
+    #        actors.append(text)
     
-    return actors
+    #return actors
 
 # Display multiselect input with session state management
 def display_multiselect(options, key, label):
@@ -74,16 +76,15 @@ def handle_annotations(article_eId,  index=0, actors=None):
             
         fragment_annotations = {            
                 'Reference': article_eId,
-                'Actors': actors,
+                #'Actors': actors,
                 #'High-level Processes': st.session_state.affected_processes,
                 'Digital Dimensions': checked_dimensions
             }
     else:
-        st.write("Please select at least one dimension to proceed.")
         fragment_annotations = {
                 'Reference': article_eId,
                 #'Description': None,
-                'Actors': None,
+                #'Actors': None,
                 #'High-level Processes': None,
                 'Digital Dimensions': None
 
@@ -124,8 +125,9 @@ def binding_requirements_page(uploaded_data):
     current_article = articles[st.session_state.current_article_index]
     display_navigation_controls(st.session_state.current_article_index, max_article_index, 'top')
 
-    actors = display_article(uploaded_data, st.session_state.current_article_index)
-    handle_annotations(current_article['eId'], index = st.session_state.current_article_index, actors = actors)
+    #actors = 
+    display_article(uploaded_data, st.session_state.current_article_index)
+    handle_annotations(current_article['eId'], index = st.session_state.current_article_index) # , actors = actors)
 
     display_navigation_controls(st.session_state.current_article_index, max_article_index, 'bottom')
     df = pd.DataFrame([x for x in st.session_state['annotations'] if x is not None])
@@ -135,6 +137,7 @@ def binding_requirements_page(uploaded_data):
 def main():
     st.set_page_config(layout="wide")
     st.title("Annotate the articles")
+    st.sidebar.write(st.session_state['celex'])
 
     if 'uploaded_data' not in st.session_state or st.session_state.uploaded_data is None:
         st.write("No data")
