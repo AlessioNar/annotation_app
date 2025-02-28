@@ -119,7 +119,7 @@ def display_navigation_controls(article_index, max_articles, position):
 # Display the binding requirements page
 def binding_requirements_page(uploaded_data):
     initialize_state()
-
+    st.write(uploaded_data['content']['preface'])
     articles = uploaded_data['content']['articles']
     max_article_index = len(articles)
     current_article = articles[st.session_state.current_article_index]
